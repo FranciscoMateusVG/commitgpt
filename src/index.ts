@@ -79,10 +79,13 @@ async function run(diff: string) {
       })
 
       if (needPullDescription.needPR) {
+        spinner.start('Asking ChatGPT 🤖 for a Pull Description...')
         const request =
           'Write a Pull Description based on the diff and the commit:\n\n' +
           answer.message
+
         const pullDescription = await api.getAnswer(request)
+        spinner.stop()
         console.log(pullDescription)
       }
 
