@@ -1,5 +1,4 @@
 // Adapted from: https://github.com/wong2/chat-gpt-google-extension/blob/main/background/index.mjs
-
 import {
   ChatCompletionRequestMessage,
   ChatCompletionRequestMessageRoleEnum,
@@ -8,17 +7,15 @@ import {
 } from 'openai'
 import { getApiKey, getPromptOptions } from './config.js'
 
-const configuration = new Configuration({
-  //@ts-ignore
-  apiKey: await getApiKey()
-})
-const openai = new OpenAIApi(configuration)
-
 const trackConversation: Message[] = []
 
 export class ChatGPTClient {
   async getAnswer(question: string): Promise<string> {
     const { model, maxTokens, temperature } = await getPromptOptions()
+    const configuration = new Configuration({
+      apiKey: await getApiKey()
+    })
+    const openai = new OpenAIApi(configuration)
 
     try {
       trackConversation.push(new Message(question, 'user'))
