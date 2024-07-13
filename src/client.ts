@@ -30,10 +30,11 @@ export class ChatGPTClient {
       })
 
       const text = result.data.choices[0].message?.content
-      if (text === undefined) {
+      const message = result.data.choices[0].message
+      if (text === undefined || message === undefined) {
         throw new Error('No text found in response.')
       }
-      trackConversation.push(new Message(text, 'assistant'))
+      trackConversation.push(message)
       return text
     } catch (e: any) {
       console.error(e?.response ?? e)
@@ -48,6 +49,6 @@ class Message implements ChatCompletionRequestMessage {
     this.role = role
   }
 
-  content: string
+  content?: string | undefined
   role: ChatCompletionRequestMessageRoleEnum
 }

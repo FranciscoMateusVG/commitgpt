@@ -66,13 +66,27 @@ async function run(diff: string) {
 
       if (answer.message === CUSTOM_MESSAGE_OPTION) {
         execSync('git commit', { stdio: 'inherit' })
-        return
       } else {
         execSync(`git commit -m '${escapeCommitMessage(answer.message)}'`, {
           stdio: 'inherit'
         })
-        return
       }
+
+      const needPullDescription = await enquirer.prompt<{ needPR: boolean }>({
+        type: 'confirm',
+        name: 'needPR',
+        message: 'Do you want to create a Pull Description?'
+      })
+
+      if (needPullDescription.needPR) {
+        const request =
+          'Write a Pull Description based on the diff and the commit:\n\n' +
+          answer.message
+        const pullDescription = await api.getAnswer(request)
+        console.log(pullDescription)
+      }
+
+      return
     } catch (e) {
       console.log('Aborted.')
       console.log(e)
