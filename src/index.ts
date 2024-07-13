@@ -40,9 +40,9 @@ run(diff)
 async function run(diff: string) {
   // TODO: we should use a good tokenizer here
   const diffTokens = diff.split(' ').length
-  if (diffTokens > 2000) {
-    console.log(`Diff is way too bug. Truncating to 2000 tokens. It may help`)
-    diff = diff.split(' ').slice(0, 2000).join(' ')
+  if (diffTokens > 5000) {
+    console.log(`Diff is way too bug. Truncating to 5000 tokens. It may help`)
+    diff = diff.split(' ').slice(0, 5000).join(' ')
   }
 
   const api = new ChatGPTClient()
